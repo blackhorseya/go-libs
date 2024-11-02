@@ -9,7 +9,7 @@ test:
 
 # Run lint check (ensure golint is installed: go install golang.org/x/lint/golint@latest)
 lint:
-	golint $(PKG)
+	golangci-lint run $(PKG)
 
 # Format the code
 fmt:
