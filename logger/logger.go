@@ -17,11 +17,11 @@ type Options struct {
 }
 
 // Init initializes the logging instance.
-func Init(options Options) error {
+func Init(options Options) (*zap.Logger, error) {
 	level := zap.NewAtomicLevel()
 	err := level.UnmarshalText([]byte(options.Level))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	cw := zapcore.Lock(os.Stdout)
@@ -41,5 +41,5 @@ func Init(options Options) error {
 
 	zap.ReplaceGlobals(logger)
 
-	return nil
+	return logger, nil
 }
