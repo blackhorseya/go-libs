@@ -1,4 +1,4 @@
-package otelx
+package metrics
 
 import (
 	"context"
