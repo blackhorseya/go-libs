@@ -3,6 +3,8 @@ package contextx
 import (
 	"context"
 
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
 
@@ -23,4 +25,13 @@ func WithContext(c context.Context) Contextx {
 		c,
 		zap.L(),
 	}
+}
+
+// SpanFromContext is a function that returns a new Contextx with the context of the request
+func SpanFromContext(c context.Context, spanName string, opts ...trace.SpanStartOption) (Contextx, trace.Span) {
+	next, span := otel.Tracer("contextx").Start(c, spanName, opts...)
+	return Contextx{
+		next,
+		zap.L(),
+	}, span
 }
