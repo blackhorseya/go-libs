@@ -8,9 +8,7 @@ import (
 
 func init() {
 	logger, _ := zap.NewDevelopment()
-	defer func() {
-		_ = logger.Sync()
-	}()
+	zap.ReplaceGlobals(logger)
 }
 
 // Contextx is a struct that holds the context of the request
