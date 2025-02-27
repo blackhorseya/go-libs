@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"log/slog"
 	"os"
 
 	"go.uber.org/zap"
@@ -40,6 +41,41 @@ func NewZapLogger(options Options) (*zap.Logger, error) {
 	logger := zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.ErrorLevel))
 
 	zap.ReplaceGlobals(logger)
+
+	return logger, nil
+}
+
+// NewSlogLogger initializes the logging instance.
+func NewSlogLogger(options Options) (*slog.Logger, error) {
+	var level slog.Level
+	switch options.Level {
+	case "debug":
+		level = slog.LevelDebug
+	case "info":
+		level = slog.LevelInfo
+	case "warn":
+		level = slog.LevelWarn
+	case "error":
+		level = slog.LevelError
+	default:
+		level = slog.LevelInfo
+	}
+
+	opts := &slog.HandlerOptions{
+		AddSource: true,
+		Level:     level,
+	}
+
+	var handler slog.Handler
+	switch options.Format {
+	case "json":
+		handler = slog.NewJSONHandler(os.Stdout, opts)
+	default:
+		handler = slog.NewTextHandler(os.Stdout, opts)
+	}
+
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
 
 	return logger, nil
 }
