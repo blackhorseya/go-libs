@@ -48,17 +48,9 @@ func NewZapLogger(options Options) (*zap.Logger, error) {
 // NewSlogLogger initializes the logging instance.
 func NewSlogLogger(options Options) (*slog.Logger, error) {
 	var level slog.Level
-	switch options.Level {
-	case "debug":
-		level = slog.LevelDebug
-	case "info":
-		level = slog.LevelInfo
-	case "warn":
-		level = slog.LevelWarn
-	case "error":
-		level = slog.LevelError
-	default:
-		level = slog.LevelInfo
+	err := level.UnmarshalText([]byte(options.Level))
+	if err != nil {
+		return nil, err
 	}
 
 	opts := &slog.HandlerOptions{
