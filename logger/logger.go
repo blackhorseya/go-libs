@@ -12,7 +12,7 @@ type Options struct {
 	// Level is the log level. options: debug, info, warn, error, dpanic, panic, fatal (default: info)
 	Level string `json:"level" yaml:"level" mapstructure:"level"`
 
-	// Format is the log format. options: json, console (default: console)
+	// Format is the log format. options: json, text (default: text)
 	Format string `json:"format" yaml:"format" mapstructure:"format"`
 }
 

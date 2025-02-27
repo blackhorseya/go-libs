@@ -1,35 +1,23 @@
-# Makefile for Go Library
+BIN := bin
 
-# Variables
-PKG=./...
+.PHONY: help
+help: ## Show help message.
+	@printf "Usage:\n"
+	@printf "  make <target>\n\n"
+	@printf "Targets:\n"
+	@perl -nle'print $& if m{^[a-zA-Z0-9_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | \
+		sort | \
+		awk 'BEGIN {FS = ":.*?## "}; \
+		{printf "  %-18s %s\n", $$1, $$2}'
 
-# Run tests
-test:
-	go test $(PKG) -v
+.PHONY: test
+test: ## Run tests.
+	go test -v ./...
 
-# Run lint check (ensure golint is installed: go install golang.org/x/lint/golint@latest)
-lint:
-	golangci-lint run $(PKG)
+.PHONY: lint
+lint: ## Run linter.
+	golangci-lint run ./...
 
-# Format the code
-fmt:
-	go fmt $(PKG)
-
-# Tidy up go.mod and go.sum
-tidy:
-	go mod tidy
-
-# Clean up any generated or temporary files (modify as needed)
-clean:
+.PHONY: clean
+clean: ## Clean up any generated or temporary files (modify as needed)
 	rm -rf ./bin ./coverage.out
-
-# Generate documentation (optional)
-docs:
-	godoc -http=:6060
-
-# Build the library (e.g., for benchmarking or testing compiled output)
-build:
-	go build $(PKG)
-
-# Phony targets to prevent conflicts with file names
-.PHONY: test lint fmt tidy clean docs build
