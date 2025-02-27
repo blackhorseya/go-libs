@@ -16,8 +16,8 @@ type Options struct {
 	Format string `json:"format" yaml:"format" mapstructure:"format"`
 }
 
-// Init initializes the logging instance.
-func Init(options Options) (*zap.Logger, error) {
+// NewZapLogger initializes the logging instance.
+func NewZapLogger(options Options) (*zap.Logger, error) {
 	level := zap.NewAtomicLevel()
 	err := level.UnmarshalText([]byte(options.Level))
 	if err != nil {

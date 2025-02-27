@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestLogger(t *testing.T) {
-	logger, err := Init(Options{
+func TestZapLogger(t *testing.T) {
+	logger, err := NewZapLogger(Options{
 		Level:  "debug",
 		Format: "console",
 	})
