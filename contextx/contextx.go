@@ -2,36 +2,41 @@ package contextx
 
 import (
 	"context"
-
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/trace"
-	"go.uber.org/zap"
+	"log/slog"
 )
 
-func init() {
-	logger, _ := zap.NewDevelopment()
-	zap.ReplaceGlobals(logger)
-}
+type loggerKeyType struct{}
+
+var loggerKey = loggerKeyType{}
 
 // Contextx is a struct that holds the context of the request
 type Contextx struct {
 	context.Context
-	*zap.Logger
+	*slog.Logger
 }
 
-// WithContext is a function that returns a new Contextx with the context of the request
+// WithContext creates a new Contextx using the logger from the given context,
+// or the default logger if none is found.
 func WithContext(c context.Context) Contextx {
+	logger := GetLogger(c)
+	newCtx := context.WithValue(c, loggerKey, logger)
 	return Contextx{
-		c,
-		zap.L(),
+		Context: newCtx,
+		Logger:  logger,
 	}
 }
 
-// SpanFromContext is a function that returns a new Contextx with the context of the request
-func SpanFromContext(c context.Context, spanName string, opts ...trace.SpanStartOption) (Contextx, trace.Span) {
-	next, span := otel.Tracer("contextx").Start(c, spanName, opts...)
-	return Contextx{
-		next,
-		zap.L(),
-	}, span
+// WithLogger attaches the given logger to the context.
+func WithLogger(c context.Context, logger *slog.Logger) context.Context {
+	return context.WithValue(c, loggerKey, logger)
+}
+
+// GetLogger retrieves the logger from the context.
+// If not found, it returns the default slog logger.
+func GetLogger(c context.Context) *slog.Logger {
+	if logger, ok := c.Value(loggerKey).(*slog.Logger); ok {
+		return logger
+	}
+
+	return slog.Default()
 }
