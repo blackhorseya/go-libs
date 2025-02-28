@@ -74,6 +74,10 @@ func (s *GinServer) Run(opts ...ServerOption) {
 
 // Shutdown gracefully shuts down the server using the configured shutdown timeout.
 func (s *GinServer) Shutdown(opts ...ServerOption) error {
+	if s.httpserver == nil {
+		return errors.New("server is not running")
+	}
+
 	// Set default shutdown options.
 	options := &serverOptions{
 		ShutdownTimeout: 5 * time.Second,
