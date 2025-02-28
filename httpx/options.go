@@ -1,15 +1,18 @@
 package httpx
 
 import (
+	"log/slog"
 	"time"
 )
 
-// ServerOption is a function that configures the server
+// ServerOption defines a function type for configuring server options.
 type ServerOption func(opts *serverOptions)
 
+// serverOptions holds configuration options for starting and shutting down the server.
 type serverOptions struct {
 	Host            string
 	Port            int
+	Logger          *slog.Logger
 	ShutdownTimeout time.Duration
 }
 
@@ -24,6 +27,13 @@ func WithHost(host string) ServerOption {
 func WithPort(port int) ServerOption {
 	return func(opts *serverOptions) {
 		opts.Port = port
+	}
+}
+
+// WithLogger sets the logger of the server
+func WithLogger(logger *slog.Logger) ServerOption {
+	return func(opts *serverOptions) {
+		opts.Logger = logger
 	}
 }
 
