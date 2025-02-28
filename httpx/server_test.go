@@ -1,7 +1,7 @@
 package httpx
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -42,7 +42,7 @@ func TestGinServer_RunAndShutdown(t *testing.T) {
 	}
 
 	// Read and verify the response body.
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("failed to read response body: %v", err)
 	}
