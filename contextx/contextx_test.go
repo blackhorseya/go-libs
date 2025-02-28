@@ -2,23 +2,17 @@ package contextx
 
 import (
 	"context"
+	"log/slog"
 	"testing"
 )
 
 func TestWithContext(t *testing.T) {
+	slog.SetLogLoggerLevel(slog.LevelDebug)
+
 	c := context.Background()
 	ctx := WithContext(c)
 
-	ctx.Info("info message")
-	ctx.Warn("warn message")
-	ctx.Error("error message")
-}
-
-func TestSpanFromContext(t *testing.T) {
-	c := context.Background()
-	ctx, span := SpanFromContext(c, "span name")
-	defer span.End()
-
+	ctx.Debug("debug message")
 	ctx.Info("info message")
 	ctx.Warn("warn message")
 	ctx.Error("error message")
