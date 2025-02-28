@@ -60,8 +60,9 @@ func (s *GinServer) Run(opts ...ServerOption) {
 
 	// Initialize http.Server based on the configured options.
 	s.httpserver = &http.Server{
-		Addr:    addr,
-		Handler: s.Router,
+		Addr:              addr,
+		Handler:           s.Router,
+		ReadHeaderTimeout: time.Second,
 	}
 
 	// Start the server asynchronously.
