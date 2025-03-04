@@ -19,7 +19,7 @@ type Contextx struct {
 // or the default logger if none is found.
 func WithContext(c context.Context) Contextx {
 	logger := GetLogger(c)
-	newCtx := context.WithValue(c, loggerKey, logger)
+	newCtx := WithLogger(c, logger)
 	return Contextx{
 		Context: newCtx,
 		Logger:  logger,
