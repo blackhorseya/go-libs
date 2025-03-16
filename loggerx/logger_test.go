@@ -1,4 +1,4 @@
-package logger
+package loggerx
 
 import (
 	"testing"
@@ -21,10 +21,7 @@ func TestZapLogger(t *testing.T) {
 }
 
 func TestSlogLogger(t *testing.T) {
-	logger, err := NewSlogLogger(Options{
-		Level:  "debug",
-		Format: "json",
-	})
+	logger, err := NewSlogLogger(WithFormat("json"), WithLevel("debug"))
 	if err != nil {
 		t.Errorf("failed to init logger: %v", err)
 	}

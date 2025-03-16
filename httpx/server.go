@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/blackhorseya/go-libs/logger"
+	"github.com/blackhorseya/go-libs/loggerx"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,7 +21,7 @@ type GinServer struct {
 // NewGinServer creates a new GinServer
 func NewGinServer(log *slog.Logger, debug bool) *GinServer {
 	middlewares := []gin.HandlerFunc{
-		logger.GinTraceLoggingMiddleware(log),
+		loggerx.GinTraceLoggingMiddleware(log),
 	}
 
 	gin.SetMode(gin.ReleaseMode)

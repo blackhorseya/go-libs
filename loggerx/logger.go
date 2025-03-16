@@ -1,4 +1,4 @@
-package logger
+package loggerx
 
 // Options is the logging options.
 type Options struct {
