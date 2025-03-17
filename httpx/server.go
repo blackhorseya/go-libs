@@ -12,6 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type InitRouterFn func(*gin.Engine)
+
 // GinServer is a wrapper around http.Server and gin.Engine for managing routes and server lifecycle.
 type GinServer struct {
 	httpserver *http.Server
